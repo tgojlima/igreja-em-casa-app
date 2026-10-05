@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igreja em Casa - Devocionais</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            /* TEMA CLARO (Default) */
+            --primary-dark: #192128;
+            --brand-teal: #16B8A7;
+            --light-teal: #E6FAF7;
+            --bg-color: #F8F9FA;
+            --card-bg: #ffffff;
+            --text-dark: #2b2b2b;
+            --text-gray: #6c757d;
+            --white: #ffffff;
+            --border-color: #edf2f7;
+            --success: #16B8A7;
+            --border-radius: 16px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body.dark-theme {
+            /* TEMA ESCURO */
+            --primary-dark: #000000;
+            --bg-color: #000000;
+            --card-bg: #111111;
+            --light-teal: rgba(22, 184, 167, 0.15);
+            --text-dark: #E2E8F0;
+            --text-gray: #A0AEC0;
+            --border-color: #222222;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-dark); -webkit-font-smoothing: antialiased; overflow-x: hidden; transition: background-color 0.4s ease; }
+        .app-container { max-width: 600px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; box-shadow: var(--shadow); position: relative; transition: background-color 0.4s ease; }
+
+        .btn { background-color: var(--brand-teal); color: var(--white); border: none; padding: 14px 24px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; transition: var(--transition); box-shadow: 0 4px 15px rgba(22, 184, 167, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn:hover { transform: translateY(-2px); background-color: #129E8F; box-shadow: 0 6px 20px rgba(22, 184, 167, 0.4); }
+
+        .view { display: none; animation: fadeIn 0.4s ease forwards; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* LOGIN VIEW */
+        #login-view { padding: 40px; text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 100vh; background-color: var(--primary-dark); color: var(--white); transition: background-color 0.4s ease; }
+        .login-title { font-size: 1.8rem; font-weight: 800; color: var(--white); margin-bottom: 5px; }
+        .login-subtitle { color: #a0aec0; margin-bottom: 30px; font-size: 0.95rem; }
+
+        .avatar-upload { margin-bottom: 30px; text-align: center; }
+        .avatar-preview { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px dashed var(--brand-teal); cursor: pointer; background-color: #2d3748; transition: var(--transition); display: block; margin: 0 auto; padding: 4px; }
+        .avatar-preview:hover { opacity: 0.8; transform: scale(1.05); }
+
+        .input-group { text-align: left; margin-bottom: 30px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--brand-teal); }
+        .input-group input { width: 100%; padding: 16px; border: 2px solid rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.1); color: var(--white); border-radius: 12px; font-size: 1rem; transition: var(--transition); outline: none; }
+        .input-group input:focus { border-color: var(--brand-teal); }
+
+        /* DASHBOARD VIEW */
+        .header { background-color: var(--primary-dark); padding: 40px 25px 30px; color: var(--white); border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: relative; transition: background-color 0.4s ease; }
+        .header-content { display: flex; align-items: center; gap: 18px; }
+        .user-dashboard-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--brand-teal); background-color: var(--white); }
+        .welcome-text { font-size: 1.5rem; font-weight: 700; color: var(--white); }
+        .church-small-text { position: absolute; top: 15px; right: 25px; font-size: 0.8rem; color: var(--brand-teal); font-weight: 700; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        
+        .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; border-radius: 50%; transition: var(--transition); }
+        .theme-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .progress-container { margin-top: 25px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; }
+        .progress-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--brand-teal); width: 0%; transition: width 0.5s ease; }
+
+        .dashboard-content { padding: 30px 25px; }
+        .week-title { font-size: 1.2rem; font-weight: 800; color: var(--primary-dark); margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
+        body.dark-theme .week-title { color: var(--white); }
+
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 20px; margin-bottom: 15px; cursor: pointer; transition: var(--transition); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .card:hover { border-color: var(--brand-teal); transform: translateX(5px); }
+        .card.completed { border-left: 5px solid var(--success); background-color: var(--light-teal); }
+        .card-day { font-size: 0.8rem; color: var(--brand-teal); font-weight: 700; margin-bottom: 4px; }
+        .card-title { font-weight: 700; font-size: 1.05rem; color: var(--text-dark); transition: color 0.4s ease; }
+        .check-icon { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--text-gray); display: flex; align-items: center; justify-content: center; color: transparent; transition: var(--transition); }
+        .card.completed .check-icon { background-color: var(--success); border-color: var(--success); color: var(--bg-color); }
+
+        /* DEVOTIONAL VIEW */
+        .top-bar { padding: 20px 25px; display: flex; align-items: center; justify-content: space-between; background: var(--bg-color); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10; transition: background-color 0.4s ease; }
+        .back-btn { background: none; border: none; font-size: 1.2rem; color: var(--text-dark); cursor: pointer; font-weight: bold; }
+        .top-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--brand-teal); }
+
+        .devo-content { padding: 25px; }
+        .devo-badge { display: inline-block; background-color: var(--light-teal); color: var(--brand-teal); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; }
+        .devo-title { color: var(--text-dark); font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 25px; }
+        .devo-section-title { color: var(--brand-teal); font-size: 1.1rem; font-weight: 800; margin-top: 30px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .devo-verse { background-color: var(--card-bg); border-left: 4px solid var(--brand-teal); padding: 15px; border-radius: 0 8px 8px 0; font-style: italic; margin-bottom: 25px; color: var(--text-dark); font-weight: 600; border: 1px solid var(--border-color); border-left: 4px solid var(--brand-teal); }
+        .devo-text p { margin-bottom: 18px; font-size: 1.05rem; color: var(--text-gray); line-height: 1.7; }
+
+        .prayer-box { background-color: var(--primary-dark); border-radius: 15px; padding: 25px; margin-top: 35px; color: var(--white); border-top: 4px solid var(--brand-teal); }
+        body.dark-theme .prayer-box { background-color: var(--card-bg); border: 1px solid var(--border-color); border-top: 4px solid var(--brand-teal); }
+        .prayer-box .devo-section-title { color: var(--brand-teal); margin-top: 0; }
+        .prayer-box p { margin-bottom: 0; font-style: italic; font-size: 1.05rem; color: #e2e8f0; }
+
+        /* ACTIONS */
+        .actions-container { margin-top: 40px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 25px; border-radius: var(--border-radius); transition: background-color 0.4s ease; }
+        .checkbox-wrapper { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; cursor: pointer; padding: 10px; border-radius: 10px; transition: var(--transition); background-color: var(--bg-color); border: 1px solid var(--border-color); }
+        .checkbox-wrapper:hover { background-color: var(--light-teal); }
+        .custom-checkbox { width: 28px; height: 28px; border: 2px solid var(--brand-teal); border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .custom-checkbox::after { content: "✓"; color: white; font-weight: bold; display: none; }
+        body.dark-theme .custom-checkbox::after { color: black; }
+        .checkbox-wrapper.checked .custom-checkbox { background-color: var(--success); border-color: var(--success); }
+        .checkbox-wrapper.checked .custom-checkbox::after { display: block; }
+        .checkbox-label { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+
+        .notes-area { width: 100%; height: 120px; padding: 15px; border: 2px solid var(--border-color); border-radius: 12px; resize: none; font-size: 1rem; outline: none; transition: var(--transition); margin-bottom: 15px; background-color: var(--bg-color); color: var(--text-dark); }
+        .notes-area:focus { border-color: var(--brand-teal); }
+        .save-notes-btn { background: var(--light-teal); color: var(--brand-teal); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: var(--transition); width: 100%; }
+        .save-notes-btn:hover { background: var(--brand-teal); color: white; }
+        body.dark-theme .save-notes-btn:hover { color: black; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- LOGIN VIEW -->
+        <div id="login-view" class="view active">
+            <h1 class="login-title">Igreja em Casa</h1>
+            <p class="login-subtitle">Bem-vindo(a) à nossa Série Devocional Diária</p>
+
+            <div class="avatar-upload">
+                <img src="https://ui-avatars.com/api/?name=User&background=16B8A7&color=fff&size=150" alt="Avatar" id="avatar-preview" class="avatar-preview" onclick="document.getElementById('avatar-input').click()">
+                <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="previewAvatar(event)">
+                <p style="font-size: 0.85rem; margin-top: 12px; color: var(--brand-teal); font-weight: 600;">Toque na imagem para adicionar sua foto</p>
+            </div>
+
+            <div class="input-group">
+                <label for="username">Seu nome ou apelido</label>
+                <input type="text" id="username" placeholder="Como gosta de ser chamado(a)?" autocomplete="off">
+            </div>
+
+            <button class="btn" onclick="login()">Entrar no Meu Devocional</button>
+        </div>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard-view" class="view">
+            <div class="header">
+                <div class="church-small-text">
+                    IGREJA EM CASA 
+                    <button class="theme-btn" onclick="toggleTheme()" title="Mudar Tema">🌙</button>
+                </div>
+                <div class="header-content">
+                    <img id="user-dashboard-avatar" src="https://ui-avatars.com/api/?name=User&background=16B8A7&color=fff&size=150" alt="Avatar" class="user-dashboard-avatar">
+                    <div>
+                        <div style="font-size: 0.9rem; opacity: 0.8; color: #cbd5e0;">Graça e paz,</div>
+                        <div class="welcome-text" id="user-display-name">Amigo</div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                        <span>Progresso da Jornada</span>
+                        <span id="progress-text">0/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="week-title">Semana 1: O Getsêmani</div>
+                <div id="week1-list"></div>
+
+                <div class="week-title">Semana 2: O Rosto Ferido</div>
+                <div id="week2-list"></div>
+
+                <div class="week-title">Semana 3: A Coroa de Espinhos</div>
+                <div id="week3-list"></div>
+
+                <div class="week-title">Semana 4: As Costas (Flagelação)</div>
+                <div id="week4-list"></div>
+            </div>
+        </div>
+
+        <!-- DEVOTIONAL VIEW -->
+        <div id="devotional-view" class="view">
+            <div class="top-bar">
+                <button class="back-btn" onclick="showDashboard()">← Voltar</button>
+                <div style="display:flex; align-items:center; gap: 15px;">
+                    <button class="theme-btn" style="color: var(--text-dark);" onclick="toggleTheme()" title="Mudar Tema">🌙</button>
+                    <img id="user-top-avatar" src="" alt="Avatar" class="top-avatar">
+                </div>
+            </div>
+
+            <div class="devo-content" id="devo-content-area">
+                <!-- Injected via JS -->
+            </div>
+            
+            <div class="devo-content" style="padding-top: 0;">
+                <div class="actions-container">
+                    <div class="checkbox-wrapper" id="done-toggle" onclick="toggleDone()">
+                        <div class="custom-checkbox"></div>
+                        <span class="checkbox-label">Marcar como concluído</span>
+                    </div>
+
+                    <label style="display:block; font-weight: 600; margin-bottom: 8px; color: var(--primary-dark);">Meu Diário (Anotações)</label>
+                    <textarea class="notes-area" id="devo-notes" placeholder="O que Deus falou com você hoje?"></textarea>
+                    <button class="save-notes-btn" onclick="saveNotes()">Salvar Anotações</button>
+                    <div id="save-feedback" style="color: var(--success); font-size: 0.85rem; font-weight: 600; text-align: center; margin-top: 10px; opacity: 0; transition: 0.3s;">Anotação salva com sucesso!</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const devos = [
+            { id: 1, week: 1, dayLabel: "DIA #01", dateLabel: "Seg, 5 Out", title: "A LUTA NO GETSÊMANI", leitura: "Lucas 22", versiculo: "\"E, estando em agonia, orava mais intensamente. E o seu suor tornou-se como grandes gotas de sangue...\" (Lucas 22:44)", p1: "A palavra 'Getsêmani' significa literalmente 'prensa de azeite'. Era o lugar onde as azeitonas eram esmagadas sob forte pressão para que o azeite puro pudesse escorrer. O primeiro derramamento do sangue de Jesus antes da cruz aconteceu exatamente nesse lugar, quando Ele mesmo estava sendo 'prensado' e esmagado por uma angústia extrema.", p2: "A pressão sobre Jesus foi tão grande que os vasos sanguíneos do Seu rosto se romperam, e Ele suou sangue. Às vezes, a vida bate tão forte que sentimos que estamos passando por um verdadeiro Getsêmani. Situações difíceis, perdas familiares e limitações podem nos fazer sentir esmagados.", p3: "Mas Jesus suou aquele sangue para que você não precise quebrar debaixo da pressão. O sangue derramado no Getsêmani nos dá a força espiritual necessária para resistir aos momentos de maior angústia. Ele traz o azeite do Espírito Santo para te consolar.", aplicar: "Você tem se sentido 'esmagado' por alguma situação? Declare hoje que a força que sustentou Jesus está disponível para você.", oracao: "Senhor Jesus, obrigado por teres suportado a prensa por mim. Derrama o Teu azeite de alegria e paz sobre a minha mente hoje. Amém." },
+            { id: 2, week: 1, dayLabel: "DIA #02", dateLabel: "Ter, 6 Out", title: "A REDENÇÃO DA NOSSA VONTADE", leitura: "Marcos 14", versiculo: "\"...contudo, não seja o que eu quero, mas sim o que tu queres.\" (Marcos 14:36)", p1: "Jesus, em Sua humanidade, não queria passar pela cruz. Ele sentiu pavor da morte. Mas escolheu derramar aquele suor de sangue para alinhar a Sua vontade à vontade de Deus.", p2: "Muitas vezes, a nossa vontade entra em conflito com Deus. Queremos que a nossa história seja diferente. Rendermos nossa vontade a Deus, especialmente quando estamos sofrendo, é a batalha mais difícil de todas.", p3: "Mas Jesus venceu essa batalha por você! Quando clamamos pelo poder daquele sangue, recebemos a graça de dizer: 'Senhor, eu confio que a Tua vontade é boa'. A rendição é o lugar mais seguro do mundo.", aplicar: "Qual área da sua vida você ainda tenta controlar? Entregue nas mãos de Deus dizendo 'seja feita a Tua vontade'.", oracao: "Pai, ajuda-me a alinhar os meus desejos aos Teus. Eu confio que os Teus planos para a minha família são os melhores. Amém." },
+            { id: 3, week: 1, dayLabel: "DIA #03", dateLabel: "Qua, 7 Out", title: "A CURA PARA O ABANDONO", leitura: "Mateus 26", versiculo: "\"Vocês não puderam vigiar comigo nem por uma hora?\" (Mateus 26:40)", p1: "Enquanto Jesus suava sangue, Seus amigos dormiam e Judas chegava para traí-Lo. Na hora em que mais precisou, encontrou abandono.", p2: "Muitos carregam feridas profundas por causa do abandono, rejeições ou luto. Essas feridas geram desconfiança e solidão.", p3: "O sangue de Jesus também foi derramado para curar o seu coração dessas dores. Ele experimentou a traição para curar a sua alma. O Espírito Santo é o amigo que nunca te abandona.", aplicar: "Deixe o sangue de Jesus curar a dor da rejeição hoje, escolhendo liberar perdão e confiar no amor fiel de Deus.", oracao: "Espírito Santo, cura o meu coração das feridas do abandono. Ajuda-me a perdoar e a descansar na Tua fidelidade. Amém." },
+            { id: 4, week: 1, dayLabel: "DIA #04", dateLabel: "Qui, 8 Out", title: "CONHECEDOR DA TRISTEZA", leitura: "Mateus 26", versiculo: "\"A minha alma está profundamente triste, numa tristeza mortal...\" (Mateus 26:38)", p1: "A Bíblia não esconde a humanidade de Jesus. Ele confessou tristeza mortal. Ele sentiu o que hoje chamamos de depressão profunda.", p2: "Talvez você tenha vivido dias sombrios, onde a vontade é desistir. Jesus sabe exatamente o que é isso, pois chorou e sofreu angústia no Getsêmani.", p3: "Ele absorveu aquela tristeza para que você e sua casa não precisem ser prisioneiros do abatimento. Há consolo e alívio nEle!", aplicar: "Não esconda sua dor de Deus. Abra o coração e clame a Ele sem medo de julgamentos.", oracao: "Consolador, reprendo todo espírito de depressão em minha casa e clamo a Tua paz sobre a minha mente hoje. Amém." },
+            { id: 5, week: 1, dayLabel: "DIA #05", dateLabel: "Sex, 9 Out", title: "A FORÇA DOS CÉUS", leitura: "Lucas 22", versiculo: "\"Então lhe apareceu um anjo do céu que o confortava.\" (Lucas 22:43)", p1: "O Pai não removeu a cruz de Jesus, mas enviou um anjo para fortalecê-Lo quando Ele se rendeu.", p2: "Isso nos ensina que Deus nunca ignora o nosso clamor. Ele talvez não remova o problema instantaneamente, mas enviará o 'anjo do conforto'.", p3: "Ele proverá recursos, amigos e paz sobrenatural. Pelo sangue do Getsêmani, você está fortalecido para vencer!", aplicar: "Lembre-se dos momentos difíceis em que Deus enviou ajuda (pessoas ou paz) para te sustentar, e agradeça.", oracao: "Obrigado por não me deixares sozinho nas batalhas. Envia Teus anjos para guardar a minha casa neste fim de semana. Amém." },
+            
+            { id: 6, week: 2, dayLabel: "DIA #06", dateLabel: "Seg, 12 Out", title: "O ROSTO FERIDO", leitura: "Isaías 50", versiculo: "\"Ofereci as minhas costas aos que me batiam, e o meu rosto aos que me arrancavam a barba...\" (Isaías 50:6)", p1: "Arrancar a barba era a maior humilhação na cultura antiga. Queriam desfigurar a identidade de Jesus. O sangue do rosto foi derramado na área que nos torna reconhecíveis.", p2: "Quantas vezes a vida e os traumas nos desfiguram por dentro, tentando arrancar nossa dignidade?", p3: "Jesus aceitou ter o rosto desfigurado para que a nossa identidade fosse restaurada perante Deus. Ele devolveu a nossa honra.", aplicar: "O sangue do rosto de Cristo foi derramado para devolver a sua honra. Tome posse disso hoje.", oracao: "Senhor, obrigado por suportares a humilhação para que eu ande de cabeça erguida. Restaura minha autoestima. Amém." },
+            { id: 7, week: 2, dayLabel: "DIA #07", dateLabel: "Ter, 13 Out", title: "O FIM DA VERGONHA", leitura: "Marcos 14", versiculo: "\"...dando-lhe murros, diziam: 'Profetize!' E os guardas o levavam, dando-lhe bofetadas.\" (Marcos 14:65)", p1: "Bofetadas tentam impor vergonha, nos fazendo querer esconder nosso passado ou nossas lutas e fracassos.", p2: "A vergonha nos diz que somos um fracasso. Mas Jesus absorveu toda a vergonha do mundo no Seu próprio rosto.", p3: "O sangue das bofetadas declarou o fim da nossa culpa. Você foi lavado e vestido com roupas de honra.", aplicar: "Olhe no espelho hoje com os olhos do perdão que Cristo conquistou por você.", oracao: "Eu entrego as lembranças que me causam vergonha. O Teu sangue me purificou para viver com a cabeça erguida. Amém." },
+            { id: 8, week: 2, dayLabel: "DIA #08", dateLabel: "Qua, 14 Out", title: "RESTAURAÇÃO DA IMAGEM", leitura: "Gênesis 1", versiculo: "\"Criou Deus o homem à sua imagem...\" (Gênesis 1:27)", p1: "Os machucados da vida distorcem a maneira como nos enxergamos. Limitações, luto ou rejeição tentam roubar nosso valor.", p2: "Jesus teve o rosto desfigurado para que a nossa imagem interior fosse restaurada à perfeição.", p3: "O seu valor não está na sua condição física ou social, mas na imagem de Cristo dentro de você.", aplicar: "Peça para Deus te dar os olhos dEle, para enxergar o seu verdadeiro valor hoje.", oracao: "Restaura a minha imagem interior, Senhor. Quero me ver amado, completo e valioso. Amém." },
+            { id: 9, week: 2, dayLabel: "DIA #09", dateLabel: "Qui, 15 Out", title: "VOCÊ NÃO É A SUA DOR", leitura: "2 Coríntios 5", versiculo: "\"Portanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram...\" (2 Coríntios 5:17)", p1: "Frequentemente corremos o risco de transformar nossa dor na nossa identidade, nos definindo pelas cicatrizes.", p2: "No Reino de Deus, você não é o seu passado ou a sua limitação. Em Cristo, você é uma nova criação com uma história em branco.", p3: "Jesus garantiu que nosso futuro será de glória. Existe vida nova florescendo em você hoje!", aplicar: "Jogue fora os rótulos de dor ('sofredor', 'fraco') e abrace a vida nova de Deus.", oracao: "Eu recuso os rótulos do passado. Renova a alegria da minha família para viver as coisas novas que preparaste. Amém." },
+            { id: 10, week: 2, dayLabel: "DIA #10", dateLabel: "Sex, 16 Out", title: "LEVANTE A CABEÇA", leitura: "Salmos 3", versiculo: "\"Mas tu, Senhor, és o escudo que me protege; és a minha glória e me fazes andar de cabeça erguida.\" (Salmos 3:3)", p1: "Fechamos o estudo aprendendo o resultado: andar de cabeça erguida. Jesus abaixou a cabeça para que você a levante.", p2: "No meio do desespero, Davi declarou que Deus era a glória que o fazia erguer a cabeça.", p3: "Independentemente dos desafios, o Senhor é o seu escudo. Você é amado e protegido.", aplicar: "Corrija a sua postura! Levante a cabeça e agradeça a Deus pela vitória neste fim de semana.", oracao: "Meu escudo e glória, eu recuso a tristeza. O Teu sangue restaurou minha honra. Amém." },
+
+            { id: 11, week: 3, dayLabel: "DIA #11", dateLabel: "Seg, 19 Out", title: "A COROA DO REI", leitura: "João 19", versiculo: "\"Os soldados teceram uma coroa de espinhos e a puseram na cabeça dele...\" (João 19:2)", p1: "Nesta terceira semana, olhamos para a Coroa de Espinhos. Os espinhos, desde Gênesis, são o símbolo da maldição que caiu sobre a terra por causa do pecado.", p2: "Quando Jesus permitiu que a coroa perfurasse a Sua cabeça, Ele estava absorvendo na Sua própria mente a maldição da humanidade. A cabeça é o centro das nossas preocupações.", p3: "Jesus sofreu na Sua cabeça para que a sua mente pudesse ter paz. Onde havia espinhos e dor, agora existe o sangue da libertação mental!", aplicar: "Que espinhos machucam a sua mente (medos, estresse)? Declare que Cristo já levou essas preocupações na cruz.", oracao: "Eu te entrego os pensamentos de angústia. Que o sangue derramado pela Tua coroa traga paz à minha mente hoje. Amém." },
+            { id: 12, week: 3, dayLabel: "DIA #12", dateLabel: "Ter, 20 Out", title: "LIBERDADE DA ANSIEDADE", leitura: "Filipenses 4", versiculo: "\"Não andem ansiosos por coisa alguma... apresentem seus pedidos a Deus.\" (Filipenses 4:6)", p1: "A ansiedade funciona como 'espinhos' apertando o nosso cérebro, nos impedindo de dormir em paz e focar no que importa.", p2: "Deus sabe que nos preocupamos. Jesus derramou sangue da Sua cabeça para arrancar esses espinhos e pagar o preço pela nossa paz mental.", p3: "Você pode apresentar seus pedidos a Deus com ação de graças, sabendo que Ele está no controle do que você não pode resolver.", aplicar: "Entregue o seu maior motivo de ansiedade nas mãos de Deus numa oração simples e vá descansar.", oracao: "Clamo o sangue da Tua coroa para me libertar da ansiedade crônica. Dá-me uma noite de sono tranquila e paz. Amém." },
+            { id: 13, week: 3, dayLabel: "DIA #13", dateLabel: "Qua, 21 Out", title: "O FIM DA RUÍNA", leitura: "Gênesis 3", versiculo: "\"Maldita é a terra por sua causa... Ela lhe dará espinhos e ervas daninhas...\" (Gênesis 3:17-18)", p1: "Os espinhos representam a escassez, a miséria e a dificuldade extrema que o pecado trouxe, fazendo o homem suar apenas para sobreviver.", p2: "Ao colocar a coroa, Jesus estava destruindo o ciclo de ruína. O sangue da Sua fronte quebrou o poder da escassez.", p3: "Em Cristo, você foi resgatado da maldição da terra seca. Seu trabalho agora será abençoado e próspero.", aplicar: "Mude sua mentalidade hoje: você não nasceu para a miséria. Jesus levou os espinhos para sua casa florescer.", oracao: "Obrigado por quebrares toda maldição de miséria. Que as portas fechadas se abram e não falte o pão na minha mesa. Amém." },
+            { id: 14, week: 3, dayLabel: "DIA #14", dateLabel: "Qui, 22 Out", title: "PAZ QUE NÃO SE EXPLICA", leitura: "João 14", versiculo: "\"Deixo-lhes a paz; a minha paz lhes dou. Não a dou como o mundo a dá.\" (João 14:27)", p1: "O mundo oferece uma falsa paz que depende de ter a conta bancária cheia. Ela acaba na primeira tempestade.", p2: "A paz de Jesus, comprada com a testa coroada de espinhos, é o antídoto contra os tormentos mentais. É o escudo da nossa mente.", p3: "Com essa paz, você pode enfrentar vales e dificuldades sem perder a esperança. É a calma de quem sabe que Ele está no barco.", aplicar: "Qual atitude prática você pode tomar hoje para proteger sua mente e não perder a paz tão facilmente?", oracao: "Príncipe da Paz, quando as situações tentarem me desesperar, que a Tua calma governe o meu coração. Amém." },
+            { id: 15, week: 3, dayLabel: "DIA #15", dateLabel: "Sex, 23 Out", title: "UMA MENTE RENOVADA", leitura: "Romanos 12", versiculo: "\"Não se amoldem ao padrão deste mundo, mas transformem-se pela renovação da sua mente...\" (Romanos 12:2)", p1: "O propósito da coroa não foi apenas tirar a dor, mas permitir que a nossa mente fosse totalmente renovada.", p2: "Pessoas machucadas veem a vida pelas lentes do medo. Mas o sangue purifica os pensamentos, nos fazendo ver com as lentes da fé.", p3: "A renovação é diária. Escolha substituir as mentiras do inimigo pela Palavra de Deus. Encha a sua mente de esperança!", aplicar: "Preste atenção no que você ouve e assiste. Escolha nutrir sua mente apenas com o que traz esperança neste fim de semana.", oracao: "Lava os meus pensamentos com a Tua Palavra. Ajuda-me a focar na vitória. Abençoa o meu fim de semana. Amém." },
+
+            { id: 16, week: 4, dayLabel: "DIA #16", dateLabel: "Seg, 26 Out", title: "O SANGUE DA NOSSA CURA", leitura: "Isaías 53", versiculo: "\"Mas ele foi transpassado por causa das nossas transgressões... e pelas suas feridas fomos curados.\" (Isaías 53:5)", p1: "Hoje olhamos para as costas de Jesus. Antes da cruz, Ele foi brutalmente chicoteado. O flagro romano arrancava pedaços de carne, deixando Suas costas irreconhecíveis.", p2: "Por que essa tortura? Isaías revelou: 'pelas suas feridas fomos curados'. Cada chicotada tinha um propósito espiritual: pagar o preço pela nossa cura física e emocional.", p3: "O sangue das costas de Jesus é o sangue da saúde. A doença não tem a última palavra na sua casa, pois o preço da cura já foi pago no corpo do Salvador!", aplicar: "Você ou alguém da família está doente? Pare de focar na enfermidade e comece a focar no preço que Jesus já pagou pela cura.", oracao: "Senhor, declaro que pelas Tuas feridas fomos curados. Reprendo toda enfermidade na minha família em nome de Jesus. Amém." },
+            { id: 17, week: 4, dayLabel: "DIA #17", dateLabel: "Ter, 27 Out", title: "A MAIOR DE TODAS AS TROCAS", leitura: "1 Pedro 2", versiculo: "\"Ele mesmo levou em seu corpo os nossos pecados... por suas feridas vocês foram curados.\" (1 Pedro 2:24)", p1: "O evangelho é uma grande troca. Jesus, totalmente saudável, absorveu a nossa dor para que pudéssemos receber a vida dEle.", p2: "A cura não é algo que Deus ainda vai decidir se lhe dá; é algo que Ele *já providenciou* no passado, nas costas chicoteadas de Cristo. 'Vocês FORAM curados'.", p3: "Nossa luta hoje é tomar posse dessa troca pela fé. Quando a dor física vier, lembre-se do Seu direito de herança à saúde.", aplicar: "Mude sua confissão quando ficar doente: em vez de medo, declare 'Jesus já levou essa dor por mim'.", oracao: "Obrigado por essa troca. Ajuda-me a ter fé para me apropriar da cura diária e blinda a nossa imunidade hoje. Amém." },
+            { id: 18, week: 4, dayLabel: "DIA #18", dateLabel: "Qua, 28 Out", title: "CURA PARA A ALMA FERIDA", leitura: "Salmos 147", versiculo: "\"Ele cura os de coração quebrantado e cuida das suas feridas.\" (Salmos 147:3)", p1: "Os açoites não trouxeram cura apenas para o corpo, mas para a alma. Muitos são fisicamente saudáveis, mas têm as costas 'curvadas' pelo peso de feridas emocionais e traumas.", p2: "A Bíblia diz que o Senhor tem o bálsamo perfeito para a sua dor silenciosa. O sangue que cura cegos e leprosos também cicatriza traumas e decepções.", p3: "Você não precisa carregar o passado. As costas de Jesus sangraram para que você pudesse andar leve por dentro.", aplicar: "Qual ferida emocional você esconde? Entregue essa dor hoje a Jesus e permita que o bálsamo atue.", oracao: "Médico dos médicos, cura a minha alma. Tira das minhas costas o peso das mágoas. Eu escolho perdoar e ser curado. Amém." },
+            { id: 19, week: 4, dayLabel: "DIA #19", dateLabel: "Qui, 29 Out", title: "UMA FÉ QUE TOCA", leitura: "Marcos 5", versiculo: "\"Porque pensava: 'Se eu tão somente tocar em seu manto, ficarei curada'.\" (Marcos 5:28)", p1: "A mulher do fluxo de sangue sofria há doze anos. Ela não precisou de muita coisa, apenas esticou a mão em meio à multidão e tocou nas vestes de Jesus.", p2: "O poder de cura de Jesus está sempre disponível, mas é a nossa fé que 'puxa' o milagre. A fé ativou o poder.", p3: "Se você lida com um problema há anos, não desista. O sacrifício já foi feito. Um toque de fé muda doze anos de sofrimento em um instante!", aplicar: "Não perca a esperança. Inspire-se na persistência dessa mulher e volte a orar com convicção hoje.", oracao: "Eu estendo as mãos a Ti em fé hoje. Mesmo que o problema pareça demorado, um toque Teu muda tudo. Amém." },
+            { id: 20, week: 4, dayLabel: "DIA #20", dateLabel: "Sex, 30 Out", title: "ANDANDO EM SAÚDE DIVINA", leitura: "3 João 1", versiculo: "\"Amado, oro para que você tenha boa saúde e tudo lhe corra bem, assim como vai bem a sua alma.\" (3 João 1:2)", p1: "Terminamos a semana lembrando que a vontade de Deus é saúde integral: corpo e alma! Andar em saúde divina é viver sob a cobertura dEle todos os dias.", p2: "Isso envolve cuidarmos do corpo (templo do Espírito Santo) e mantermos a fé. A doença é uma intrusa. Um novo nível de vida foi inaugurado.", p3: "Neste fim de semana, celebre a vida. Reivindique a saúde divina para a sua família e agradeça pelas feridas dEle!", aplicar: "Você tem cuidado do seu corpo (alimentação, sono)? Lembre-se que cuidar do corpo também é espiritual.", oracao: "Obrigado pelas Tuas costas marcadas por amor a mim. Consagro meu corpo e minha família a Ti. Saúde e paz! Amém." }
+        ];
+
+        let userName = localStorage.getItem('portaDaPaz_userName');
+        let userAvatar = localStorage.getItem('portaDaPaz_userAvatar');
+        let currentTheme = localStorage.getItem('portaDaPaz_theme') || 'light';
+        let completed = JSON.parse(localStorage.getItem('portaDaPaz_completed') || '[]');
+        let currentDevoId = null;
+
+        window.onload = () => {
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+            updateThemeIcons();
+
+            if (userAvatar) {
+                document.getElementById('avatar-preview').src = userAvatar;
+            }
+            if (userName) {
+                document.getElementById('user-display-name').innerText = userName;
+                document.getElementById('user-dashboard-avatar').src = userAvatar || `https://ui-avatars.com/api/?name=${userName}&background=16B8A7&color=fff&size=150`;
+                document.getElementById('user-top-avatar').src = userAvatar || `https://ui-avatars.com/api/?name=${userName}&background=16B8A7&color=fff&size=150`;
+                renderDashboard();
+                switchView('dashboard-view');
+            }
+        };
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+            localStorage.setItem('portaDaPaz_theme', currentTheme);
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const icon = currentTheme === 'dark' ? '☀️' : '🌙';
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.innerText = icon);
+        }
+
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatar-preview').src = e.target.result;
+                    userAvatar = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function login() {
+            const input = document.getElementById('username').value.trim();
+            if (input) {
+                userName = input;
+                localStorage.setItem('portaDaPaz_userName', userName);
+                if (userAvatar) localStorage.setItem('portaDaPaz_userAvatar', userAvatar);
+                
+                document.getElementById('user-display-name').innerText = userName;
+                document.getElementById('user-dashboard-avatar').src = userAvatar || `https://ui-avatars.com/api/?name=${userName}&background=16B8A7&color=fff&size=150`;
+                document.getElementById('user-top-avatar').src = userAvatar || `https://ui-avatars.com/api/?name=${userName}&background=16B8A7&color=fff&size=150`;
+                
+                renderDashboard();
+                switchView('dashboard-view');
+            } else {
+                alert("Por favor, digite o seu nome para continuar.");
+            }
+        }
+
+        function renderDashboard() {
+            const w1 = document.getElementById('week1-list');
+            const w2 = document.getElementById('week2-list');
+            const w3 = document.getElementById('week3-list');
+            const w4 = document.getElementById('week4-list');
+            w1.innerHTML = ''; w2.innerHTML = ''; w3.innerHTML = ''; w4.innerHTML = '';
+
+            devos.forEach(d => {
+                const isDone = completed.includes(d.id);
+                const html = `
+                    <div class="card ${isDone ? 'completed' : ''}" onclick="openDevo(${d.id})">
+                        <div>
+                            <div class="card-day">${d.dayLabel} | ${d.dateLabel}</div>
+                            <div class="card-title">${d.title}</div>
+                        </div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                `;
+                if (d.week === 1) w1.innerHTML += html;
+                else if (d.week === 2) w2.innerHTML += html;
+                else if (d.week === 3) w3.innerHTML += html;
+                else w4.innerHTML += html;
+            });
+
+            document.getElementById('progress-text').innerText = `${completed.length}/${devos.length}`;
+            document.getElementById('progress-fill').style.width = `${(completed.length / devos.length) * 100}%`;
+        }
+
+        function openDevo(id) {
+            currentDevoId = id;
+            const d = devos.find(x => x.id === id);
+            
+            const html = `
+                <span class="devo-badge">${d.dayLabel} | ${d.dateLabel}</span>
+                <h1 class="devo-title">${d.title}</h1>
+
+                <h2 class="devo-section-title">📖 Leitura</h2>
+                <p style="font-weight: 600; color: var(--text-dark);">${d.leitura}</p>
+
+                <h2 class="devo-section-title">✨ Versículo-chave</h2>
+                <div class="devo-verse">${d.versiculo}</div>
+
+                <h2 class="devo-section-title">💡 A Essência do Ensino</h2>
+                <div class="devo-text">
+                    <p>${d.p1}</p>
+                    <p>${d.p2}</p>
+                    <p>${d.p3}</p>
+                </div>
+
+                <h2 class="devo-section-title">🎯 Para refletir e aplicar</h2>
+                <p style="font-weight: 600; color: var(--text-dark); font-size: 1.1rem; line-height: 1.6;">${d.aplicar}</p>
+
+                <div class="prayer-box">
+                    <h2 class="devo-section-title">🙏 Momento de Oração</h2>
+                    <p>"${d.oracao}"</p>
+                </div>
+            `;
+            document.getElementById('devo-content-area').innerHTML = html;
+
+            const isDone = completed.includes(id);
+            const wrapper = document.getElementById('done-toggle');
+            if (isDone) wrapper.classList.add('checked');
+            else wrapper.classList.remove('checked');
+
+            const savedNote = localStorage.getItem(`portaDaPaz_note_${id}`) || '';
+            document.getElementById('devo-notes').value = savedNote;
+
+            switchView('devotional-view');
+        }
+
+        function showDashboard() {
+            renderDashboard();
+            switchView('dashboard-view');
+        }
+
+        function toggleDone() {
+            const wrapper = document.getElementById('done-toggle');
+            wrapper.classList.toggle('checked');
+            const isNowDone = wrapper.classList.contains('checked');
+
+            if (isNowDone && !completed.includes(currentDevoId)) {
+                completed.push(currentDevoId);
+            } else if (!isNowDone) {
+                completed = completed.filter(x => x !== currentDevoId);
+            }
+            localStorage.setItem('portaDaPaz_completed', JSON.stringify(completed));
+            renderDashboard(); 
+        }
+
+        function saveNotes() {
+            const val = document.getElementById('devo-notes').value;
+            localStorage.setItem(`portaDaPaz_note_${currentDevoId}`, val);
+            
+            const fb = document.getElementById('save-feedback');
+            fb.style.opacity = '1';
+            setTimeout(() => { fb.style.opacity = '0'; }, 2000);
+        }
+    </script>
+</body>
+</html>
