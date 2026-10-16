@@ -37,7 +37,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-dark); -webkit-font-smoothing: antialiased; overflow-x: hidden; transition: background-color 0.4s ease; }
+        body { background-color: var(--bg-color); color: var(--text-dark); -webkit-font-smoothing: antialiased; overflow-x: hidden; transition: background-color 0.4s ease; scroll-behavior: smooth; }
         .app-container { max-width: 600px; margin: 0 auto; background-color: var(--bg-color); min-height: 100vh; box-shadow: var(--shadow); position: relative; transition: background-color 0.4s ease; }
 
         .btn { background-color: var(--brand-teal); color: var(--white); border: none; padding: 14px 24px; border-radius: 30px; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; transition: var(--transition); box-shadow: 0 4px 15px rgba(22, 184, 167, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -74,6 +74,8 @@
         .progress-container { margin-top: 25px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; }
         .progress-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 8px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--brand-teal); width: 0%; transition: width 0.5s ease; }
+        .print-btn { margin-top: 15px; width: 100%; padding: 12px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .print-btn:hover { background: rgba(255,255,255,0.25); }
 
         .dashboard-content { padding: 30px 25px; }
         .week-title { font-size: 1.2rem; font-weight: 800; color: var(--primary-dark); margin: 25px 0 15px; display: flex; align-items: center; gap: 10px; }
@@ -161,15 +163,16 @@
                 <div class="progress-container">
                     <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
                         <span>Progresso da Jornada</span>
-                        <span id="progress-text">0/20</span>
+                        <span id="progress-text">0/45</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progress-fill"></div>
                     </div>
+                    <button class="print-btn" onclick="printReport()">🖨️ Imprimir Meu Diário</button>
                 </div>
             </div>
 
-            <div class="dashboard-content">
+            <div class="dashboard-content" id="lista-devocionais">
                 <div class="week-title">Semana 1: O Getsêmani</div>
                 <div id="week1-list"></div>
 
@@ -181,6 +184,21 @@
 
                 <div class="week-title">Semana 4: As Costas (Flagelação)</div>
                 <div id="week4-list"></div>
+
+                <div class="week-title">Semana 5: As Mãos (Cravos)</div>
+                <div id="week5-list"></div>
+
+                <div class="week-title">Semana 6: Os Pés (Cravos)</div>
+                <div id="week6-list"></div>
+
+                <div class="week-title">Semana 7: O Lado (A Lança)</div>
+                <div id="week7-list"></div>
+
+                <div class="week-title">Semana 8: A Família Debaixo da Graça</div>
+                <div id="week8-list"></div>
+
+                <div class="week-title">Semana 9: Vencendo as Tempestades</div>
+                <div id="week9-list"></div>
             </div>
         </div>
 
@@ -239,7 +257,37 @@
             { id: 17, week: 4, dayLabel: "DIA #17", dateLabel: "Ter, 27 Out", title: "A MAIOR DE TODAS AS TROCAS", leitura: "1 Pedro 2", versiculo: "\"Ele mesmo levou em seu corpo os nossos pecados... por suas feridas vocês foram curados.\" (1 Pedro 2:24)", p1: "O evangelho é uma grande troca. Jesus, totalmente saudável, absorveu a nossa dor para que pudéssemos receber a vida dEle.", p2: "A cura não é algo que Deus ainda vai decidir se lhe dá; é algo que Ele *já providenciou* no passado, nas costas chicoteadas de Cristo. 'Vocês FORAM curados'.", p3: "Nossa luta hoje é tomar posse dessa troca pela fé. Quando a dor física vier, lembre-se do Seu direito de herança à saúde.", aplicar: "Mude sua confissão quando ficar doente: em vez de medo, declare 'Jesus já levou essa dor por mim'.", oracao: "Obrigado por essa troca. Ajuda-me a ter fé para me apropriar da cura diária e blinda a nossa imunidade hoje. Amém." },
             { id: 18, week: 4, dayLabel: "DIA #18", dateLabel: "Qua, 28 Out", title: "CURA PARA A ALMA FERIDA", leitura: "Salmos 147", versiculo: "\"Ele cura os de coração quebrantado e cuida das suas feridas.\" (Salmos 147:3)", p1: "Os açoites não trouxeram cura apenas para o corpo, mas para a alma. Muitos são fisicamente saudáveis, mas têm as costas 'curvadas' pelo peso de feridas emocionais e traumas.", p2: "A Bíblia diz que o Senhor tem o bálsamo perfeito para a sua dor silenciosa. O sangue que cura cegos e leprosos também cicatriza traumas e decepções.", p3: "Você não precisa carregar o passado. As costas de Jesus sangraram para que você pudesse andar leve por dentro.", aplicar: "Qual ferida emocional você esconde? Entregue essa dor hoje a Jesus e permita que o bálsamo atue.", oracao: "Médico dos médicos, cura a minha alma. Tira das minhas costas o peso das mágoas. Eu escolho perdoar e ser curado. Amém." },
             { id: 19, week: 4, dayLabel: "DIA #19", dateLabel: "Qui, 29 Out", title: "UMA FÉ QUE TOCA", leitura: "Marcos 5", versiculo: "\"Porque pensava: 'Se eu tão somente tocar em seu manto, ficarei curada'.\" (Marcos 5:28)", p1: "A mulher do fluxo de sangue sofria há doze anos. Ela não precisou de muita coisa, apenas esticou a mão em meio à multidão e tocou nas vestes de Jesus.", p2: "O poder de cura de Jesus está sempre disponível, mas é a nossa fé que 'puxa' o milagre. A fé ativou o poder.", p3: "Se você lida com um problema há anos, não desista. O sacrifício já foi feito. Um toque de fé muda doze anos de sofrimento em um instante!", aplicar: "Não perca a esperança. Inspire-se na persistência dessa mulher e volte a orar com convicção hoje.", oracao: "Eu estendo as mãos a Ti em fé hoje. Mesmo que o problema pareça demorado, um toque Teu muda tudo. Amém." },
-            { id: 20, week: 4, dayLabel: "DIA #20", dateLabel: "Sex, 30 Out", title: "ANDANDO EM SAÚDE DIVINA", leitura: "3 João 1", versiculo: "\"Amado, oro para que você tenha boa saúde e tudo lhe corra bem, assim como vai bem a sua alma.\" (3 João 1:2)", p1: "Terminamos a semana lembrando que a vontade de Deus é saúde integral: corpo e alma! Andar em saúde divina é viver sob a cobertura dEle todos os dias.", p2: "Isso envolve cuidarmos do corpo (templo do Espírito Santo) e mantermos a fé. A doença é uma intrusa. Um novo nível de vida foi inaugurado.", p3: "Neste fim de semana, celebre a vida. Reivindique a saúde divina para a sua família e agradeça pelas feridas dEle!", aplicar: "Você tem cuidado do seu corpo (alimentação, sono)? Lembre-se que cuidar do corpo também é espiritual.", oracao: "Obrigado pelas Tuas costas marcadas por amor a mim. Consagro meu corpo e minha família a Ti. Saúde e paz! Amém." }
+            { id: 20, week: 4, dayLabel: "DIA #20", dateLabel: "Sex, 30 Out", title: "ANDANDO EM SAÚDE DIVINA", leitura: "3 João 1", versiculo: "\"Amado, oro para que você tenha boa saúde e tudo lhe corra bem, assim como vai bem a sua alma.\" (3 João 1:2)", p1: "Terminamos a semana lembrando que a vontade de Deus é saúde integral: corpo e alma! Andar em saúde divina é viver sob a cobertura dEle todos os dias.", p2: "Isso envolve cuidarmos do corpo (templo do Espírito Santo) e mantermos a fé. A doença é uma intrusa. Um novo nível de vida foi inaugurado.", p3: "Neste fim de semana, celebre a vida. Reivindique a saúde divina para a sua família e agradeça pelas feridas dEle!", aplicar: "Você tem cuidado do seu corpo (alimentação, sono)? Lembre-se que cuidar do corpo também é espiritual.", oracao: "Obrigado pelas Tuas costas marcadas por amor a mim. Consagro meu corpo e minha família a Ti. Saúde e paz! Amém." },
+
+            { id: 21, week: 5, dayLabel: "DIA #21", dateLabel: "Seg, 2 Nov", title: "MÃOS PREGADAS, MÃOS LIVRES", leitura: "Salmos 24", versiculo: "\"Quem poderá subir o monte do Senhor? Aquele que tem as mãos limpas e o coração puro...\" (Salmos 24:3-4)", p1: "Quando os cravos perfuraram as mãos de Jesus, a dor foi indescritível. As mãos que curaram leprosos e abençoaram crianças agora estavam presas.", p2: "Havia um propósito espiritual nisso. Muitas vezes nossas mãos foram usadas para coisas erradas, para ofender ou reter. O sangue de Cristo jorrou para 'lavar' as nossas mãos.", p3: "Jesus teve Suas mãos imobilizadas na cruz para que as suas pudessem estar livres hoje. Livres para adorar, abraçar a família e prosperar de forma limpa!", aplicar: "Você já sentiu que as suas mãos estavam 'sujas' por erros? Use suas mãos hoje para abençoar alguém (com um favor ou abraço).", oracao: "Senhor, perdoa-me quando usei minhas mãos para o erro. Consagro-as a Ti para serem instrumentos de amor na minha casa. Amém." },
+            { id: 22, week: 5, dayLabel: "DIA #22", dateLabel: "Ter, 3 Nov", title: "O FIM DA ESTERILIDADE", leitura: "Deuteronômio 28", versiculo: "\"O Senhor abrirá o seu bom tesouro, o céu... para abençoar todo o trabalho das suas mãos.\" (Deuteronômio 28:12)", p1: "Você já trabalhou muito, mas viu o resultado escapar por entre os dedos? Parece haver uma 'esterilidade'. Em Gênesis, por causa do pecado, o trabalho tornou-se frustrante.", p2: "Quando o sangue escorreu das mãos de Jesus para a terra do Calvário, essa maldição de esterilidade foi quebrada. Ele resgatou o direito de abençoar o seu trabalho.", p3: "Você não nasceu para viver frustrado profissionalmente. Existe uma promessa de que aquilo que você tocar prosperará.", aplicar: "Quais projetos parecem estar 'estacionados'? Apresente-os a Deus e declare que a esterilidade já foi quebrada.", oracao: "Eu te entrego o meu trabalho e finanças. Pelo sangue das mãos de Jesus, declaro que o trabalho das minhas mãos é frutífero. Amém." },
+            { id: 23, week: 5, dayLabel: "DIA #23", dateLabel: "Qua, 4 Nov", title: "QUEBRANDO AS ALGEMAS INVISÍVEIS", leitura: "Isaías 61", versiculo: "\"O Espírito do Soberano Senhor está sobre mim... Ele me enviou para proclamar liberdade aos cativos...\" (Isaías 61:1)", p1: "Os pregos nas mãos de Jesus foram as correntes mais cruéis. Ele suportou ficar preso para que você jamais precisasse viver acorrentado.", p2: "Existem 'algemas invisíveis': vícios, dívidas ou um apego ao passado que impede a pessoa de avançar. Correntes reais que paralisam.", p3: "O derramamento desse sangue enferrujou e quebrou toda corrente espiritual. O destino da sua família não é o cativeiro, é a liberdade plena em Cristo!", aplicar: "Identifique se há algum hábito, dívida ou medo funcionando como 'algema'. Decida abandoná-lo hoje.", oracao: "Hoje eu quebro todas as algemas de vícios e medos que tentam prender a minha família. Viveremos em total liberdade. Amém." },
+            { id: 24, week: 5, dayLabel: "DIA #24", dateLabel: "Qui, 5 Nov", title: "MÃOS ABERTAS PARA SEMEAR", leitura: "2 Coríntios 9", versiculo: "\"Deus ama quem dá com alegria. E Deus é poderoso para fazer que toda a graça lhes seja acrescentada...\" (2 Coríntios 9:7-8)", p1: "Na cruz, as mãos de Cristo foram forçadas a ficar abertas. Espiritualmente, isso nos ensina: mãos fechadas não podem receber nada novo.", p2: "O medo do futuro nos torna egoístas, retendo recursos e amor por medo da falta. Mas o sangue de Jesus nos cura desse medo e nos ensina a ter 'mãos abertas'.", p3: "Quando você se torna generoso, ativa a lei da semeadura. Deus garante que nunca faltará semente para aquele que tem o coração aberto.", aplicar: "Procure uma oportunidade hoje para abrir as mãos e abençoar alguém que não pode te dar nada em troca.", oracao: "Arranca do meu coração o medo da falta. Ensina-me a ter mãos abertas para abençoar, assim como abriste os braços para mim. Amém." },
+            { id: 25, week: 5, dayLabel: "DIA #25", dateLabel: "Sex, 6 Nov", title: "O TOQUE DE BÊNÇÃO", leitura: "Marcos 10", versiculo: "\"Então Jesus, tomando as crianças nos braços, abençoou-as, impondo-lhes as mãos.\" (Marcos 10:16)", p1: "Antes da cruz, as mãos de Jesus tinham uma marca: abençoar. Ele tocava intocáveis e impunha as mãos sobre as crianças declarando paz.", p2: "Por causa do Calvário, Ele transferiu essa autoridade para você! Suas mãos carregam o Espírito. Você tem autoridade para abençoar seus filhos.", p3: "O sangue transformou suas mãos em ferramentas de milagres. Não subestime o poder de uma bênção liberada dentro de casa!", aplicar: "Não deixe o dia acabar sem impor as mãos sobre seus filhos ou familiares, abençoando o seu destino.", oracao: "Ergo as minhas mãos e abençoo a minha família e o meu trabalho. Que o nosso fim de semana seja de paz. Amém." },
+
+            { id: 26, week: 6, dayLabel: "DIA #26", dateLabel: "Seg, 9 Nov", title: "PÉS PREGADOS, CAMINHOS ABERTOS", leitura: "Salmos 119", versiculo: "\"A tua palavra é lâmpada que ilumina os meus passos e luz que clareia o meu caminho.\" (Salmos 119:105)", p1: "Jesus teve Seus pés perfurados por um único e grande cravo, unindo-os contra a madeira. A dor O impedia de dar qualquer passo ou encontrar alívio.", p2: "Espiritualmente, Ele estava se entregando para resgatar o nosso caminhar. O sangue dos Seus pés purificou os lugares onde nossos pés pisaram de forma errada ao longo da vida.", p3: "Porque Ele ficou preso, nós ganhamos a liberdade para caminhar na luz. Os caminhos que antes estavam trancados por maldições, agora estão abertos pelo poder do sangue!", aplicar: "Agradeça a Deus por ter te tirado de caminhos perigosos. Confie que Ele está abrindo as portas certas para você hoje.", oracao: "Senhor, lava os meus passos com o Teu sangue. Que os caminhos da minha família sejam abertos e abençoados por Ti nesta semana. Amém." },
+            { id: 27, week: 6, dayLabel: "DIA #27", dateLabel: "Ter, 10 Nov", title: "A RESTAURAÇÃO DO PROPÓSITO", leitura: "Provérbios 4", versiculo: "\"Veja bem por onde anda, e os seus passos serão seguros.\" (Provérbios 4:26)", p1: "Você já se sentiu andando em círculos? Sem saber o seu propósito ou o destino da sua família? O sangue dos pés de Jesus traz direção e clareza.", p2: "No deserto, o povo de Israel andou 40 anos em círculos porque lhes faltava obediência. Jesus teve Seus pés pregados na direção exata da vontade de Deus, sem recuar.", p3: "Ao clamarmos o sangue dos Seus pés, recebemos um 'GPS espiritual'. Deus alinha os nossos passos com o propósito dEle, acabando com a confusão.", aplicar: "Você tem tido dúvidas sobre qual decisão tomar? Entregue essa situação hoje e peça que o Espírito Santo guie os seus pés.", oracao: "Pai, eu não quero mais andar em círculos. Dá-me clareza e direção. Alinha os meus passos com o Teu grande propósito. Amém." },
+            { id: 28, week: 6, dayLabel: "DIA #28", dateLabel: "Qua, 11 Nov", title: "AUTORIDADE SOBRE O INIMIGO", leitura: "Lucas 10", versiculo: "\"Eu lhes dei autoridade para pisarem sobre serpentes e escorpiões... e nada lhes fará dano.\" (Lucas 10:19)", p1: "A primeira profecia bíblica (Gênesis 3:15) dizia que a serpente feriria o calcanhar do Salvador, mas Ele esmagaria a cabeça dela.", p2: "Na cruz, o prego feriu os pés de Jesus. Mas aquele sangue derramado esmagou definitivamente o poder do inimigo sobre as nossas vidas!", p3: "Hoje, Jesus nos devolve essa autoridade. Pelo sangue, os seus pés não estão mais vulneráveis; eles receberam poder para pisar em qualquer ataque espiritual contra a sua casa.", aplicar: "Não aceite a opressão na sua casa. Use a autoridade que Cristo te deu e repreenda as ações do inimigo em oração.", oracao: "Eu tomo posse da autoridade de Cristo. Reprendo toda inveja, contenda e malícia contra a minha casa. Meus pés pisarão em vitória! Amém." },
+            { id: 29, week: 6, dayLabel: "DIA #29", dateLabel: "Qui, 12 Nov", title: "O FIM DOS CAMINHOS DE MORTE", leitura: "Salmos 1", versiculo: "\"Como é feliz aquele que não segue o conselho dos ímpios, não imita a conduta dos pecadores...\" (Salmos 1:1)", p1: "Antes de conhecer a Cristo, muitos de nós andamos por caminhos de autodestruição: vícios, más companhias ou decisões que machucaram a nossa família.", p2: "O derramamento de sangue nos pés de Jesus pagou o preço por todas essas vezes em que escolhemos a rota errada e colhemos dor.", p3: "Ele te tira do caminho de morte e firma os seus pés sobre a Rocha. Você não precisa mais tropeçar nos mesmos erros do passado. Seu caminhar agora é seguro!", aplicar: "Existe alguma velha amizade ou hábito que tenta te puxar de volta para caminhos errados? Corte isso da sua vida hoje.", oracao: "Obrigado por me tirares do caminho da perdição. Firma os meus pés sobre a Rocha e me ajuda a fazer escolhas sábias. Amém." },
+            { id: 30, week: 6, dayLabel: "DIA #30", dateLabel: "Sex, 13 Nov", title: "PASSOS DE PAZ E BOAS NOVAS", leitura: "Romanos 10", versiculo: "\"Como são belos os pés dos que anunciam boas novas!\" (Romanos 10:15)", p1: "Fechamos esta sexta semana entendendo que os nossos pés, agora curados e purificados pelo sangue, têm uma nova e gloriosa missão.", p2: "Você foi chamado para levar a presença de Deus onde quer que vá. No seu trabalho e na sua casa, os seus passos devem trazer paz e não confusão.", p3: "Quando você chega em um ambiente, as pessoas devem sentir o amor de Deus através de você. Os seus pés são os pés de um mensageiro do Senhor!", aplicar: "Neste final de semana, seja um promotor da paz. Evite brigas e traga a alegria de Cristo para dentro do seu lar.", oracao: "Senhor, dedico o meu caminhar a Ti. Que a minha entrada em casa traga alegria e as boas novas da salvação. Abençoa o nosso fim de semana. Amém." },
+
+            { id: 31, week: 7, dayLabel: "DIA #31", dateLabel: "Seg, 16 Nov", title: "O CORAÇÃO TRASPASSADO", leitura: "João 19", versiculo: "\"Um dos soldados perfurou o lado de Jesus com uma lança, e logo saiu sangue e água.\" (João 19:34)", p1: "Chegamos à sétima e última etapa dos derramamentos de sangue: o lado de Jesus. Ele já estava morto, mas para comprovar o óbito, um soldado romano cravou uma lança no Seu lado, perfurando o Seu coração.", p2: "O coração é o centro das nossas emoções e sentimentos. Naquele momento terrível, o coração de Jesus foi rasgado fisicamente. Mas espiritualmente, isso aconteceu para que o seu coração pudesse ser curado de todas as dores crônicas.", p3: "Quantas vezes a vida parece ter cravado uma 'lança' no seu peito? Decepções profundas, luto, palavras duras. Jesus deixou Seu coração ser rasgado para derramar o bálsamo da cura sobre o seu coração ferido.", aplicar: "Existe alguma ferida profunda no seu coração que você tem escondido? Hoje é o dia de deixar Jesus tocar nessa dor.", oracao: "Senhor, obrigado por deixares o Teu coração ser ferido por mim. Cura as feridas profundas da minha alma e tira toda a amargura. Amém." },
+            { id: 32, week: 7, dayLabel: "DIA #32", dateLabel: "Ter, 17 Nov", title: "A ÁGUA E O SANGUE", leitura: "1 João 5", versiculo: "\"Este é o que veio por água e sangue: Jesus Cristo...\" (1 João 5:6)", p1: "A ciência médica explica que a água misturada com o sangue que saiu do lado de Jesus indicava o rompimento do pericárdio. Ele literalmente morreu de coração partido.", p2: "Mas profeticamente, a água representa a limpeza e a purificação, enquanto o sangue representa a redenção e a compra. Onde existe dor e trauma, Deus faz jorrar uma fonte de purificação.", p3: "Você não precisa viver o resto da vida refém das mágoas. A água e o sangue que fluíram de Cristo têm o poder de lavar a sua mente e trazer um alívio refrescante para a sua casa.", aplicar: "Permita que a 'água' do Espírito Santo lave os ressentimentos. Escolha perdoar aquela pessoa que te feriu no passado.", oracao: "Lava o meu interior, Senhor! Que a água e o sangue do Teu sacrifício purifiquem as emoções da minha família hoje. Amém." },
+            { id: 33, week: 7, dayLabel: "DIA #33", dateLabel: "Qua, 18 Nov", title: "A CURA DA REJEIÇÃO PROFUNDA", leitura: "Isaías 61", versiculo: "\"O Senhor me enviou para restaurar os de coração abatido...\" (Isaías 61:1)", p1: "Uma das dores mais terríveis que um ser humano pode enfrentar é a rejeição. Ser abandonado, esquecido ou traído é como uma lança afiada cravada no peito.", p2: "Jesus experimentou a rejeição máxima. Seus amigos fugiram, e Ele carregou o peso do mundo até se sentir abandonado na cruz. Ele absorveu a sua rejeição para que você jamais duvidasse do seu valor.", p3: "Em Cristo, você não é um rejeitado. Você é amado, escolhido e aceito incondicionalmente pelo Pai celestial. O Seu valor foi definido pelo preço pago na cruz!", aplicar: "Se a rejeição tentou definir a sua identidade, rejeite essa mentira! Você foi comprado por um alto preço e é um filho amado.", oracao: "Pai, eu recuso o sentimento de rejeição. Obrigado por me aceitares de braços abertos. Eu declaro que sou amado por Ti. Amém." },
+            { id: 34, week: 7, dayLabel: "DIA #34", dateLabel: "Qui, 19 Nov", title: "NASCIDOS DO CORAÇÃO DE DEUS", leitura: "Gênesis 2", versiculo: "\"Então o Senhor Deus fez o homem cair em profundo sono... tirou-lhe uma das costelas e da costela fez a mulher.\" (Gênesis 2:21-22)", p1: "Lá no Éden, quando Deus quis criar uma noiva para Adão, Ele o fez dormir, abriu o seu lado e de lá formou Eva. Esse foi um mistério profético do que aconteceria no futuro.", p2: "Na cruz, Jesus (o 'segundo Adão') dormiu o sono da morte. Quando o soldado abriu o Seu lado com a lança, Deus fez nascer de lá a Sua noiva: a Igreja!", p3: "Você não é fruto do acaso. Você nasceu do coração rasgado de Jesus. A Igreja não é apenas um prédio, somos nós, a família de Deus, nascida do amor mais profundo que já existiu.", aplicar: "Sinta o privilégio de pertencer à família de Deus. Olhe para os irmãos do seu pequeno grupo hoje com amor e respeito.", oracao: "Jesus, sou grato por fazer parte da Tua Igreja. Ensina-nos a viver em união, como irmãos nascidos do Teu próprio coração. Amém." },
+            { id: 35, week: 7, dayLabel: "DIA #35", dateLabel: "Sex, 20 Nov", title: "UM NOVO CORAÇÃO PARA A FAMÍLIA", leitura: "Ezequiel 36", versiculo: "\"Darei a vocês um coração novo... tirarei de vocês o coração de pedra e lhes darei um coração de carne.\" (Ezequiel 36:26)", p1: "Concluímos a jornada dos sete derramamentos de sangue com uma promessa maravilhosa: a troca do coração de pedra por um coração sensível.", p2: "Muitas vezes as famílias sofrem porque os corações se endurecem. Falta diálogo, falta carinho, sobram ofensas. Mas o sangue do lado de Jesus tem o poder de amolecer corações rígidos.", p3: "Neste fim de semana, peça para Deus renovar os sentimentos dentro da sua casa. Ele pode transformar a dureza em doçura, e a frieza no fogo do Espírito Santo. O amor venceu a cruz!", aplicar: "Que tal tomar a iniciativa e dizer palavras de amor ou pedir perdão a alguém da sua família neste final de semana?", oracao: "Senhor, quebra todo coração de pedra dentro da minha casa. Dá-nos um coração de carne, cheio de amor e perdão. Abençoa o nosso fim de semana. Amém." },
+
+            { id: 36, week: 8, dayLabel: "DIA #36", dateLabel: "Seg, 23 Nov", title: "UM LAR EDIFICADO NA ROCHA", leitura: "Mateus 7", versiculo: "\"Portanto, quem ouve estas minhas palavras e as pratica é como um homem prudente que construiu a sua casa sobre a rocha.\" (Mateus 7:24)", p1: "Jesus contou a história de dois homens que construíram suas casas. Um construiu na areia e o outro na rocha. Quando as tempestades vieram, apenas a casa na rocha ficou de pé.", p2: "As tempestades (crises financeiras, doenças, conflitos) batem na porta de todas as famílias, sem exceção. O que determina se uma família vai desabar ou suportar não é a força da tempestade, mas a força do seu alicerce.", p3: "Edificar o lar na Rocha significa colocar os ensinamentos de Jesus no centro da sua casa. É decidir amar e perdoar como Ele ensinou. Quando Cristo é a base, nenhuma crise tem o poder de destruir a sua família.", aplicar: "Sua família está passando por alguma tempestade? Faça uma oração hoje entregando o controle dessa situação nas mãos de Jesus.", oracao: "Senhor, eu convido a Tua presença para ser a rocha da minha família. Ajuda-nos a praticar os Teus ensinamentos dentro de casa. Amém." },
+            { id: 37, week: 8, dayLabel: "DIA #37", dateLabel: "Ter, 24 Nov", title: "O PODER DO PERDÃO EM CASA", leitura: "Colossenses 3", versiculo: "\"Suportem-se uns aos outros e perdoem as queixas que tiverem... Perdoem como o Senhor lhes perdoou.\" (Colossenses 3:13)", p1: "A família é o lugar onde somos mais amados, mas também onde podemos ser mais feridos. A convivência diária sob o mesmo teto sempre gera atritos, decepções e falhas.", p2: "É por isso que a Bíblia nos pede para suportarmos uns aos outros e perdoarmos as ofensas. O perdão não é um 'sentimento mágico' onde você esquece o que passou; o perdão é uma decisão de não cobrar mais a dívida.", p3: "Reter perdão envenena a alma e transforma a casa numa prisão de amargura. Hoje, escolha perdoar. A graça que Deus tem por você é a mesma que Ele pede que você estenda aos seus familiares.", aplicar: "Há alguém na sua família que você precisa perdoar? Libere essa pessoa no seu coração hoje, mesmo que ela não tenha pedido desculpas.", oracao: "Pai, eu escolho liberar perdão para aqueles que me feriram dentro de casa. Lava o meu coração de toda mágoa. Amém." },
+            { id: 38, week: 8, dayLabel: "DIA #38", dateLabel: "Qua, 25 Nov", title: "PALAVRAS QUE ABENÇOAM", leitura: "Provérbios 16", versiculo: "\"As palavras agradáveis são como um favo de mel, são doces para a alma e trazem cura para os ossos.\" (Provérbios 16:24)", p1: "O livro de Provérbios compara as palavras doces ao mel, dizendo que elas trazem saúde. Em contraste, palavras ásperas funcionam como espadas que ferem profundamente.", p2: "Dentro de casa, muitas vezes perdemos o filtro. Falamos com os nossos familiares de uma forma que jamais falaríamos com estranhos na rua. A crítica constante e a impaciência minam a alegria do lar.", p3: "Você tem o poder de mudar a atmosfera da sua casa hoje, apenas mudando o seu jeito de falar. Troque as reclamações por palavras de ânimo e reconhecimento. Seja a voz que abençoa!", aplicar: "Faça um elogio sincero a alguém da sua família hoje. Troque qualquer crítica por uma palavra de encorajamento.", oracao: "Espírito Santo, coloca um guarda na minha boca. Ajuda-me a usar as minhas palavras para construir e abençoar a minha família. Amém." },
+            { id: 39, week: 8, dayLabel: "DIA #39", dateLabel: "Qui, 26 Nov", title: "AMOR QUE SUPORTA", leitura: "1 Coríntios 13", versiculo: "\"O amor tudo sofre, tudo crê, tudo espera, tudo suporta.\" (1 Coríntios 13:7)", p1: "O amor que o apóstolo Paulo descreve não é aquele amor de romance dos filmes, que acaba quando o outro erra. É o amor prático e resistente, que decide ficar nos dias difíceis.", p2: "Amar a família quando tudo está bem é fácil. O verdadeiro desafio é amar quando o cônjuge está estressado, quando o filho é rebelde, ou quando o parente nos decepciona e nos irrita.", p3: "O amor de Deus por nós não desiste quando falhamos. Da mesma forma, somos chamados a ser o suporte seguro para a nossa família. Esse amor verdadeiro é a 'cola' que mantém o lar unido.", aplicar: "Tenha paciência com as falhas dos seus familiares. Lembre-se de quantas vezes Deus teve paciência com você.", oracao: "Deus, derrama do Teu amor incondicional no meu coração. Dá-me graça para suportar e amar a minha família nos dias difíceis. Amém." },
+            { id: 40, week: 8, dayLabel: "DIA #40", dateLabel: "Sex, 27 Nov", title: "UM REFÚGIO DE PAZ", leitura: "Salmos 127", versiculo: "\"Se não for o Senhor o construtor da casa, será inútil trabalhar na obra.\" (Salmos 127:1)", p1: "O Salmo nos ensina uma verdade libertadora: 'Se o Senhor não edificar a casa, em vão trabalham os construtores'. Isso tira de nós o peso esmagador de tentarmos ser perfeitos.", p2: "Você não pode controlar o comportamento de todos na sua família, mas pode entregá-la nas mãos de Quem pode. Quando você convida Deus para ser o guardião do seu lar, a ansiedade diminui.", p3: "O seu lar deve ser um verdadeiro refúgio de paz, onde todos sintam segurança ao cruzar a porta. Neste final de semana, declare que o Senhor é o construtor da sua família.", aplicar: "Descanse o seu coração. Pare de tentar controlar tudo e entregue as rédeas da sua casa para Jesus cuidar.", oracao: "Senhor, sê o construtor e o guardião do meu lar. Que a nossa casa seja um refúgio de paz neste fim de semana. Amém." },
+
+            { id: 41, week: 9, dayLabel: "DIA #41", dateLabel: "Seg, 30 Nov", title: "JESUS ESTÁ NO BARCO", leitura: "Marcos 4", versiculo: "\"Ele se levantou, repreendeu o vento e disse ao mar: 'Aquiete-se! Acalme-se!' O vento se aquietou, e fez-se completa bonança.\" (Marcos 4:39)", p1: "Os discípulos estavam no meio do mar quando uma tempestade violenta começou a encher o barco de água. Eles se desesperaram, achando que iam morrer, enquanto Jesus dormia tranquilamente.", p2: "Muitas vezes, enfrentamos tempestades tão fortes na vida (como luto, diagnósticos ou crises) que pensamos que Deus está 'dormindo' e não se importa com a nossa dor.", p3: "Mas o fato de Jesus estar no barco garantia que eles não afundariam. Não importa o tamanho do desespero hoje; se Cristo está no seu barco, a sua família não vai afundar. Ele tem o controle dos ventos!", aplicar: "Não olhe para o tamanho das ondas (os problemas), olhe para Quem está no barco com você.", oracao: "Jesus, a tempestade está forte, mas eu confio que Tu estás no barco comigo. Traz a Tua bonança para a minha casa hoje. Amém." },
+            { id: 42, week: 9, dayLabel: "DIA #42", dateLabel: "Ter, 1 Dez", title: "O DEUS DE TODO CONSOLO", leitura: "2 Coríntios 1", versiculo: "\"Bendito seja o Deus e Pai... o Pai das misericórdias e o Deus de todo o consolo...\" (2 Coríntios 1:3)", p1: "O apóstolo Paulo chama o Senhor de 'Pai das misericórdias e Deus de todo consolo'. Ele é especialista em enxugar as lágrimas daqueles que estão sofrendo perdas irreparáveis.", p2: "Existem feridas e vazios que nenhum ser humano, remédio ou distração consegue preencher. O luto e a dor profunda da saudade só encontram alívio no abraço do Espírito Santo, o nosso Consolador.", p3: "Deus não foge do seu choro nem minimiza a sua dor. Ele recolhe as suas lágrimas. Permita-se ser abraçado pelo Pai hoje, pois Ele está trabalhando para colar os pedaços do seu coração.", aplicar: "Não tente ser forte o tempo todo. Se precisar chorar, chore na presença de Deus, sabendo que Ele te entende.", oracao: "Pai das misericórdias, eu te entrego a minha tristeza. Consola o meu coração e preenche o vazio que ficou. Amém." },
+            { id: 43, week: 9, dayLabel: "DIA #43", dateLabel: "Qua, 2 Dez", title: "QUANDO NÃO ENTENDEMOS", leitura: "Provérbios 3", versiculo: "\"Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento.\" (Provérbios 3:5)", p1: "A Bíblia nos pede para confiar em Deus e não dependermos apenas do que os nossos olhos veem. Há momentos na vida que simplesmente não fazem sentido e quebram as nossas expectativas.", p2: "A nossa visão é limitada. Só vemos o que está acontecendo agora, mas Deus vê o quadro completo da eternidade. Tentar entender o 'porquê' das tragédias muitas vezes só nos traz mais angústia.", p3: "A fé verdadeira não significa entender tudo, mas sim confiar em Quem entende. Descanse hoje na certeza de que o caráter de Deus é bom, mesmo quando a situação ao redor é difícil.", aplicar: "Pare de exigir respostas para tudo. Escolha confiar que Deus está cuidando de detalhes que você não pode ver.", oracao: "Senhor, eu não entendo os Teus caminhos, mas eu confio no Teu coração. Ajuda-me a descansar na Tua sabedoria. Amém." },
+            { id: 44, week: 9, dayLabel: "DIA #44", dateLabel: "Qui, 3 Dez", title: "FORÇA NA FRAQUEZA", leitura: "2 Coríntios 12", versiculo: "\"A minha graça te basta, porque o meu poder se aperfeiçoa na fraqueza.\" (2 Coríntios 12:9)", p1: "Quando Paulo pediu para Deus remover um sofrimento da sua vida, a resposta de Deus foi surpreendente. Ele não tirou o problema, mas deu a força necessária para suportá-lo.", p2: "Vivemos numa sociedade que exige que sejamos sempre 'guerreiros' e fortes. Mas no Reino de Deus, é exatamente quando reconhecemos que não aguentamos mais, que o poder dEle nos sustenta.", p3: "Você não precisa fingir que dá conta de tudo. Apresente sua fraqueza e exaustão a Jesus. É exatamente através das suas fragilidades que a graça de Deus vai te colocar de pé.", aplicar: "Confesse a Deus hoje as áreas onde você se sente fraco e cansado, e peça para a força dEle assumir o controle.", oracao: "Jesus, a Tua graça me basta. Eu reconheço a minha fraqueza e peço que o Teu poder me sustente neste dia difícil. Amém." },
+            { id: 45, week: 9, dayLabel: "DIA #45", dateLabel: "Sex, 4 Dez", title: "A ESPERANÇA QUE NÃO MORRE", leitura: "Lamentações 3", versiculo: "\"Quero trazer à memória o que me pode dar esperança. As misericórdias do Senhor são a causa de não sermos consumidos...\" (Lamentações 3:21-22)", p1: "No meio de um cenário de total destruição e luto, o profeta Jeremias tomou uma atitude radical: ele decidiu focar a sua mente naquilo que poderia trazer esperança.", p2: "Quando passamos por provações prolongadas, a nossa mente tende a focar apenas nas coisas ruins. Mas a esperança não é uma ilusão; é uma escolha de lembrar da bondade e da fidelidade de Deus no passado.", p3: "Neste fim de semana, escolha lembrar das misericórdias de Deus, que se renovam a cada manhã. O choro e a dor podem durar uma noite escura, mas a alegria de Deus sempre chegará pela manhã!", aplicar: "Escreva num papel (ou no seu diário) três coisas boas que Deus já fez por você, e leia quando sentir medo.", oracao: "Senhor, as Tuas misericórdias se renovam hoje sobre a minha vida. Eu escolho a esperança. Abençoa o meu fim de semana com paz. Amém." }
         ];
 
         let userName = localStorage.getItem('portaDaPaz_userName');
@@ -309,6 +357,13 @@
                 
                 renderDashboard();
                 switchView('dashboard-view');
+
+                setTimeout(() => {
+                    const devocionaisSection = document.getElementById('lista-devocionais');
+                    if (devocionaisSection) {
+                        devocionaisSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 400); 
             } else {
                 alert("Por favor, digite o seu nome para continuar.");
             }
@@ -319,7 +374,12 @@
             const w2 = document.getElementById('week2-list');
             const w3 = document.getElementById('week3-list');
             const w4 = document.getElementById('week4-list');
-            w1.innerHTML = ''; w2.innerHTML = ''; w3.innerHTML = ''; w4.innerHTML = '';
+            const w5 = document.getElementById('week5-list');
+            const w6 = document.getElementById('week6-list');
+            const w7 = document.getElementById('week7-list');
+            const w8 = document.getElementById('week8-list');
+            const w9 = document.getElementById('week9-list');
+            w1.innerHTML = ''; w2.innerHTML = ''; w3.innerHTML = ''; w4.innerHTML = ''; w5.innerHTML = ''; w6.innerHTML = ''; w7.innerHTML = ''; w8.innerHTML = ''; w9.innerHTML = '';
 
             devos.forEach(d => {
                 const isDone = completed.includes(d.id);
@@ -335,7 +395,12 @@
                 if (d.week === 1) w1.innerHTML += html;
                 else if (d.week === 2) w2.innerHTML += html;
                 else if (d.week === 3) w3.innerHTML += html;
-                else w4.innerHTML += html;
+                else if (d.week === 4) w4.innerHTML += html;
+                else if (d.week === 5) w5.innerHTML += html;
+                else if (d.week === 6) w6.innerHTML += html;
+                else if (d.week === 7) w7.innerHTML += html;
+                else if (d.week === 8) w8.innerHTML += html;
+                else w9.innerHTML += html;
             });
 
             document.getElementById('progress-text').innerText = `${completed.length}/${devos.length}`;
@@ -410,6 +475,91 @@
             const fb = document.getElementById('save-feedback');
             fb.style.opacity = '1';
             setTimeout(() => { fb.style.opacity = '0'; }, 2000);
+        }
+
+        function printReport() {
+            let reportWindow = window.open('', '_blank');
+            let isDark = currentTheme === 'dark';
+            
+            let html = `
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+                <meta charset="UTF-8">
+                <title>Relatório do Diário Devocional</title>
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+                    body { 
+                        font-family: 'Inter', sans-serif; 
+                        padding: 40px; 
+                        max-width: 800px; 
+                        margin: 0 auto; 
+                        background-color: ${isDark ? '#000' : '#fff'};
+                        color: ${isDark ? '#e2e8f0' : '#333'};
+                    }
+                    h1 { color: #16B8A7; border-bottom: 2px solid #16B8A7; padding-bottom: 10px; }
+                    .header-info { font-size: 1.1rem; margin-bottom: 30px; }
+                    .note-card { 
+                        border: 1px solid ${isDark ? '#333' : '#e2e8f0'}; 
+                        padding: 20px; 
+                        margin-bottom: 20px; 
+                        border-radius: 12px;
+                        background-color: ${isDark ? '#111' : '#f8f9fa'};
+                        page-break-inside: avoid;
+                    }
+                    .note-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; color: ${isDark ? '#fff' : '#192128'}; }
+                    .note-content { font-style: italic; color: ${isDark ? '#a0aec0' : '#4a5568'}; line-height: 1.6; }
+                    .empty-state { text-align: center; color: #a0aec0; margin-top: 50px; font-style: italic; }
+                    
+                    @media print {
+                        body { background-color: white !important; color: black !important; }
+                        .note-card { background-color: white !important; border-color: #ccc !important; }
+                        .note-title { color: black !important; }
+                        .note-content { color: #333 !important; }
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Meu Diário Devocional</h1>
+                <div class="header-info">
+                    <p><strong>Nome:</strong> ${userName}</p>
+                    <p><strong>Progresso:</strong> ${completed.length} dias concluídos de ${devos.length}</p>
+                </div>
+            `;
+            
+            let hasNotes = false;
+            let sortedCompleted = [...completed].sort((a,b) => a - b);
+            
+            sortedCompleted.forEach(id => {
+                let d = devos.find(x => x.id === id);
+                let note = localStorage.getItem(`portaDaPaz_note_${id}`);
+                if (note && note.trim() !== '') {
+                    hasNotes = true;
+                    html += `
+                    <div class="note-card">
+                        <div class="note-title">${d.dayLabel} - ${d.title}</div>
+                        <div class="note-content">"${note.replace(/\\n/g, '<br>')}"</div>
+                    </div>`;
+                }
+            });
+
+            if (!hasNotes) {
+                html += `<p class="empty-state">Você ainda não salvou nenhuma anotação no seu diário.</p>`;
+            }
+
+            html += `
+                <div style="margin-top: 40px; text-align: center; font-size: 0.8rem; color: #a0aec0;">
+                    Gerado pelo App Igreja em Casa
+                </div>
+            </body>
+            </html>`;
+            
+            reportWindow.document.write(html);
+            reportWindow.document.close();
+            
+            setTimeout(() => {
+                reportWindow.print();
+            }, 500);
         }
     </script>
 </body>
